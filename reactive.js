@@ -1,31 +1,22 @@
-var oplog = require('mongo-oplog')('mongodb://127.0.0.1:27017/local').tail();
+var argv = require('minimist')(process.argv.slice(2), {
+  alias: {
+    u: 'uri'
+  },
+  default: {
+    uri: 'mongodb://127.0.0.1:27017/local'
+  }
+});
+
+var EventEmitter = require('events').EventEmitter;
+var oplog = require('mongo-oplog')(argv.uri).tail();
 
 oplog.on('op', function(data) {
-  console.log(data);
+
 });
 
-oplog.on('insert', function(doc) {
-  console.log(doc.op);
-});
+function Reactive() {
+  if (!(this instanceof Reactive)) return new Reactive();
+}
+Reactive.prototype.__proto__ = EventEmitter.prototype;
 
-oplog.on('update', function(doc) {
-  console.log(doc.op);
-});
-
-oplog.on('delete', function(doc) {
-  console.log(doc.op._id);
-});
-
-oplog.on('error', function(error) {
-  console.log(error);
-});
-
-oplog.on('end', function() {
-  console.log('Stream ended');
-});
-
-oplog.stop(function() {
-  console.log('server stopped');
-});
-
-console.log('...');
+module.exports = Reactive;
