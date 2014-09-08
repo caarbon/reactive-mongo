@@ -13,7 +13,8 @@ var oplog = require('mongo-oplog')(argv.uri).tail();
 oplog.on('op', function(data) {
   var ns = data.ns.split('.');
   var op = data.op === 'i' ? 'insert' :
-    data.op === 'r' ? 'remove' : false;
+    data.op === 'r' ? 'remove' :
+    false;
 
   if (op === false) {
     return;
