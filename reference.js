@@ -14,9 +14,12 @@ oplog.on('op', function(data) {
 
 });
 
-function Reactive() {
-  if (!(this instanceof Reactive)) return new Reactive();
-}
-Reactive.prototype.__proto__ = EventEmitter.prototype;
+function Reference(ns) {
+  if (!(this instanceof Reference)) return new Reference(ns);
 
-module.exports = Reactive;
+  this.ns = ns;
+  return this;
+}
+Reference.prototype.__proto__ = EventEmitter.prototype;
+
+module.exports = Reference;
