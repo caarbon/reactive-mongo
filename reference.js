@@ -16,6 +16,7 @@ oplog.on('op', function(data) {
   var ns = data.ns.split('.');
   var op = data.op === 'i' ? 'insert' :
     data.op === 'r' ? 'remove' :
+    data.op === 'u' ? 'update' :
     false;
 
   if (op === false) {
@@ -24,12 +25,7 @@ oplog.on('op', function(data) {
 
   // emitting from each portion of ns
   while (ns.length) {
-    oplog.emit([
-      'ref::',
-      ns.join('.'),
-      '::',
-      op
-    ].join(''), data.o);
+    oplog.emit('ref::' + ns.join('.'), op, data.o);
     ns.pop();
   }
 });
@@ -38,16 +34,12 @@ function Reference(ns) {
   if (!(this instanceof Reference)) return new Reference(ns);
 
   this.ns = ns;
+  var self = this;
+
+  oplog.on('ref::' + this.ns, function(op, doc) {
+    self.emit(op, doc);
+  });
 }
 Reference.prototype.__proto__ = EventEmitter.prototype;
-
-Reference.prototype.on = function(op, callback) {
-  oplog.on([
-    'ref::',
-    this.ns,
-    '::',
-    op
-  ].join(''), callback);
-};
 
 module.exports = Reference;
