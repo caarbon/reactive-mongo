@@ -2,6 +2,38 @@
 
 This module allows you to subscribe to events, based on what's shakin' in your MongoDB.
 
+## Usage
+
+Create a connection to your database (local or remote) and begin reacting to changes in the oplog.
+
+```js
+var Reactive = require('reactive-mongo');
+var Db = new Reactive(); // assumes local, unless URI passed
+
+Db.on('error', function(err) {
+  console.log(err);
+});
+
+var reference = new Db('testdb.records');
+
+reference.on('insert', function(doc) {
+  console.log(doc);
+});
+
+reference.on('update', function(doc) {
+  console.log(doc);
+});
+
+reference.on('delete', function(doc) {
+  console.log(doc);
+});
+
+reference.on('op', function(op, doc) {
+  console.log('operation: ' + op);
+  console.log(doc);
+});
+```
+
 ## How?
 
 MongoDB uses an [oplog](http://docs.mongodb.org/manual/core/replica-set-oplog/) (short for "operation log") to sync a master to its slaves. Most databases have some form of replication files.
