@@ -1,7 +1,7 @@
 {
   "name": "reactive-mongo",
   "version": "0.1.0",
-  "main": "reference",
+  "main": "reactive",
   "engines": {
     "node": ">=0.10.20"
   },
