@@ -10,6 +10,8 @@ var argv = require('minimist')(process.argv.slice(2), {
 var EventEmitter = require('events').EventEmitter;
 var oplog = require('mongo-oplog')(argv.uri).tail();
 
+oplog.setMaxListeners(0); // infinity
+
 oplog.on('op', function(data) {
   var ns = data.ns.split('.');
   var op = data.op === 'i' ? 'insert' :
@@ -36,11 +38,8 @@ function Reference(ns) {
   if (!(this instanceof Reference)) return new Reference(ns);
 
   this.ns = ns;
-  return this;
 }
 Reference.prototype.__proto__ = EventEmitter.prototype;
-
-module.exports = Reference;
 
 Reference.prototype.on = function(op, callback) {
   oplog.on([
@@ -48,7 +47,7 @@ Reference.prototype.on = function(op, callback) {
     this.ns,
     '::',
     op
-  ].join(''), function(obj) {
-    callback(null, obj);
-  });
+  ].join(''), callback);
 };
+
+module.exports = Reference;
