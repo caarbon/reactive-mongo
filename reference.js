@@ -1,45 +1,46 @@
-var argv = require('minimist')(process.argv.slice(2), {
-  alias: {
-    u: 'uri'
-  },
-  default: {
-    uri: 'mongodb://127.0.0.1:27017/local'
-  }
-});
-
 var EventEmitter = require('events').EventEmitter;
-var oplog = require('mongo-oplog')(argv.uri).tail();
 
-oplog.setMaxListeners(0); // infinity
+function Reactive(uri) {
+  if (!(this instanceof Reactive)) return new Reactive(uri);
 
-oplog.on('op', function(data) {
-  var ns = data.ns.split('.');
-  var op = data.op === 'i' ? 'insert' :
-    data.op === 'r' ? 'remove' :
-    data.op === 'u' ? 'update' :
-    false;
+  var oplog = require('mongo-oplog')(uri || 'mongodb://127.0.0.1:27017/local').tail();
+  var root = this;
 
-  if (op === false) {
-    return;
-  }
+  oplog.setMaxListeners(0); // infinity
 
-  // emitting from each portion of ns
-  while (ns.length) {
-    oplog.emit('ref::' + ns.join('.'), op, data.o);
-    ns.pop();
-  }
-});
+  oplog.on('op', function(data) {
+    var ns = data.ns.split('.');
+    var op = data.op === 'i' ? 'insert' :
+      data.op === 'r' ? 'remove' :
+      data.op === 'u' ? 'update' :
+      false;
 
-function Reference(ns) {
-  if (!(this instanceof Reference)) return new Reference(ns);
+    if (op === false) {
+      return;
+    }
 
-  this.ns = ns;
-  var self = this;
-
-  oplog.on('ref::' + this.ns, function(op, doc) {
-    self.emit(op, doc);
+    // emitting from each portion of ns
+    while (ns.length) {
+      root.emit('ref::' + ns.join('.'), op, data.o);
+      ns.pop();
+    }
   });
-}
-Reference.prototype.__proto__ = EventEmitter.prototype;
 
-module.exports = Reference;
+  function Reference(ns) {
+    if (!(this instanceof Reference)) return new Reference(ns);
+
+    this.ns = ns;
+    var self = this;
+
+    root.on('ref::' + this.ns, function(op, doc) {
+      self.emit('op', op, doc);
+      self.emit(op, doc);
+    });
+  }
+  Reference.prototype.__proto__ = EventEmitter.prototype;
+
+  return Reference;
+}
+Reactive.prototype.__proto__ = EventEmitter.prototype;
+
+module.exports = Reactive;

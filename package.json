@@ -6,7 +6,6 @@
     "node": ">=0.10.20"
   },
   "dependencies" : {
-    "mongo-oplog": "0.1.5",
-    "minimist": "1.1.0"
+    "mongo-oplog": "0.1.5"
   }
 }
