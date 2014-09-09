@@ -1,7 +1,9 @@
 var EventEmitter = require('events').EventEmitter;
 
 function Reactive(uri) {
-  if (!(this instanceof Reactive)) return new Reactive(uri);
+  if (!(this instanceof Reactive)) {
+    return new Reactive(uri);
+  }
 
   var oplog = require('mongo-oplog')(uri || 'mongodb://127.0.0.1:27017/local').tail();
   var root = this;
@@ -27,7 +29,9 @@ function Reactive(uri) {
   });
 
   function Reference(ns) {
-    if (!(this instanceof Reference)) return new Reference(ns);
+    if (!(this instanceof Reference)) {
+      return new Reference(ns);
+    }
 
     this.ns = ns;
     var self = this;
