@@ -10,10 +10,14 @@ function Reactive(uri) {
 
   oplog.setMaxListeners(0); // infinity
 
+  oplog.on('error', function(err) {
+    root.emit('error', err);
+  });
+
   oplog.on('op', function(data) {
     var ns = data.ns.split('.');
     var op = data.op === 'i' ? 'insert' :
-      data.op === 'r' ? 'remove' :
+      data.op === 'd' ? 'delete' :
       data.op === 'u' ? 'update' :
       false;
 

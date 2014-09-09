@@ -46,3 +46,25 @@ switched to db local
 Now, in the same client, if you run `show collections` you should see some new ones for the oplog.
 
 Go back to the `mongod` terminal and restart it. The errors should go away, and you'll be ready to use Reactive Mongo.
+
+## Working on Compose (formerlly MongoHQ)
+
+You must use a database that has elastic search turned on.
+
+Use a database user who has `oplogAccess` enabled.
+
+![oplogAccess user creation example](./readme_images/oplogAccess_user_creation.png)
+
+In the settings for the database, you'll see an example of how to connect to the database. It will look something like
+
+```
+mongodb://<user>:<password>@candidate.35.mongolayer.com:10491,candidate.34.mongolayer.com:10493/oplog_test
+```
+
+In this example `oplog_test` is the database name. Tweak that slightly. Instead of ending in `/oplog_test` change it to be `/local?authSource=oplog_test`.
+
+```
+mongodb://<user>:<password>@candidate.35.mongolayer.com:10491,candidate.34.mongolayer.com:10493/local?authSource=oplog_test
+```
+
+Use this path to connect to your database and tail the oplog.
