@@ -4,7 +4,7 @@ This module allows you to subscribe to events, based on what's shakin' in your M
 
 ## How?
 
-MongoDB uses an [oplog](http://docs.mongodb.org/manual/core/replica-set-oplog/) (short of "operation log") to sync a master to its slaves. Most databases have some form of replication files.
+MongoDB uses an [oplog](http://docs.mongodb.org/manual/core/replica-set-oplog/) (short for "operation log") to sync a master to its slaves. Most databases have some form of replication files.
 
 ## Working on local
 

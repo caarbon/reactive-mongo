@@ -22,7 +22,12 @@ oplog.on('op', function(data) {
 
   // emitting from each portion of ns
   while (ns.length) {
-    oplog.emit('ref::' + ns.join('.'), op, data.o);
+    oplog.emit([
+      'ref::',
+      ns.join('.'),
+      '::',
+      op
+    ].join(''), data.o);
     ns.pop();
   }
 });
@@ -36,3 +41,14 @@ function Reference(ns) {
 Reference.prototype.__proto__ = EventEmitter.prototype;
 
 module.exports = Reference;
+
+Reference.prototype.on = function(op, callback) {
+  oplog.on([
+    'ref::',
+    this.ns,
+    '::',
+    op
+  ].join(''), function(obj) {
+    callback(null, obj);
+  });
+};
