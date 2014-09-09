@@ -23,7 +23,7 @@ function Reactive(uri) {
 
     // emitting from each portion of ns
     while (ns.length) {
-      root.emit('ref::' + ns.join('.'), op, data.o);
+      root.emit(ns.join('.'), op, data.o);
       ns.pop();
     }
   });
@@ -36,7 +36,7 @@ function Reactive(uri) {
     this.ns = ns;
     var self = this;
 
-    root.on('ref::' + this.ns, function(op, doc) {
+    root.on(this.ns, function(op, doc) {
       self.emit('op', op, doc);
       self.emit(op, doc);
     });
