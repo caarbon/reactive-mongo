@@ -5,6 +5,8 @@ function Reactive(uri) {
     return new Reactive(uri);
   }
 
+  this.setMaxListeners(0); // infinity
+
   var oplog = require('mongo-oplog')(uri || 'mongodb://127.0.0.1:27017/local').tail();
   var root = this;
 
@@ -36,6 +38,8 @@ function Reactive(uri) {
     }
 
     this.ns = ns;
+    this.setMaxListeners(0); // infinity
+    
     var self = this;
 
     root.on(this.ns, function(op, doc) {
