@@ -8,8 +8,6 @@ function Reactive(uri) {
   var oplog = require('mongo-oplog')(uri || 'mongodb://127.0.0.1:27017/local').tail();
   var root = this;
 
-  oplog.setMaxListeners(0); // infinity
-
   oplog.on('error', function(err) {
     root.emit('error', err);
   });
