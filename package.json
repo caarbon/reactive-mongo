@@ -1,11 +1,18 @@
 {
   "name": "reactive-mongo",
-  "version": "0.1.0",
+  "author": "Tim Marshall <mars@caarbon.com>",
+  "description": "Event listening for MongoDB",
+  "version": "0.0.1",
   "main": "reactive",
   "engines": {
     "node": ">=0.10.20"
   },
   "dependencies" : {
     "mongo-oplog": "0.1.5"
-  }
+  },
+  "homepage": "https://github.com/caarbon/reactive-mongo",
+  "repository": "git://github.com/caarbon/reactive-mongo",
+  "bugs": "https://github.com/caarbon/reactive-mongo/issues",
+  "license": "ISC",
+  "keywords": ["mongodb", "mongo", "event", "oplog", "reactive"]
 }
