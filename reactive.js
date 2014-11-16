@@ -39,7 +39,7 @@ function Reactive(uri) {
 
     this.ns = ns;
     this.setMaxListeners(0); // infinity
-    
+
     var self = this;
 
     root.on(this.ns, function(op, doc) {

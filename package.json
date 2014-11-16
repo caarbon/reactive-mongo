@@ -7,8 +7,19 @@
   "engines": {
     "node": ">=0.10.20"
   },
+  "scripts": {
+    "test": "grunt lint" 
+  },
   "dependencies" : {
     "mongo-oplog": "0.1.5"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-concurrent": "^1.0.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-jscs": "^0.8.1",
+    "grunt-notify": "^0.3.1",
+    "matchdep": "^0.3.0"
   },
   "homepage": "https://github.com/caarbon/reactive-mongo",
   "repository": "git://github.com/caarbon/reactive-mongo",
