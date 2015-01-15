@@ -14,11 +14,11 @@ function Reactive(uri) {
     root.emit('error', err);
   });
 
-  oplog.on('op', function(data) {
-    var ns = data.ns.split('.');
-    var op = data.op === 'i' ? 'insert' :
-      data.op === 'd' ? 'delete' :
-      data.op === 'u' ? 'update' :
+  oplog.on('op', function(raw) {
+    var ns = raw.ns.split('.');
+    var op = raw.op === 'i' ? 'insert' :
+      raw.op === 'd' ? 'delete' :
+      raw.op === 'u' ? 'update' :
       false;
 
     if (op === false) {
@@ -27,7 +27,7 @@ function Reactive(uri) {
 
     // emitting from each portion of ns
     while (ns.length) {
-      root.emit(ns.join('.'), op, data.o);
+      root.emit(ns.join('.'), op, raw.o, raw.o2, raw);
       ns.pop();
     }
   });
@@ -42,9 +42,9 @@ function Reactive(uri) {
 
     var self = this;
 
-    root.on(this.ns, function(op, doc) {
+    root.on(this.ns, function(op, doc, query, raw) {
       self.emit('op', op, doc);
-      self.emit(op, doc);
+      self.emit(op, doc, query, raw);
     });
   }
   Reference.prototype.__proto__ = EventEmitter.prototype;

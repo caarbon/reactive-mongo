@@ -40,6 +40,19 @@ reference.on('op', function(op, doc) {
 });
 ```
 
+On any reference, you can also retrieve the query and raw operation object.
+
+```js
+reference.on('update', function(doc, query, op) {
+  // attributes updated
+  console.log(doc);
+  // query used in find
+  console.log(query);
+  // raw oplog operation
+  console.log(op);
+});
+```
+
 ## How?
 
 MongoDB uses an [oplog](http://docs.mongodb.org/manual/core/replica-set-oplog/) (short for "operation log") to sync a master to its slaves. Most databases have some form of replication files.
