@@ -2,7 +2,7 @@
   "name": "reactive-mongo",
   "author": "Tim Marshall <mars@caarbon.com>",
   "description": "Event listening for MongoDB",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "reactive",
   "engines": {
     "node": ">=0.10.20"
