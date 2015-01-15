@@ -2,6 +2,12 @@
 
 This module allows you to subscribe to events, based on what's shakin' in your MongoDB.
 
+## NPM
+
+```
+npm install reactive-mongo --save
+```
+
 ## Usage
 
 Create a connection to your database (local or remote) and begin reacting to changes in the oplog.
